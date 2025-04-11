@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Off Topic</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-2px); }
+    }
+
+    .floaty {
+      animation: floaty 2.5s ease-in-out infinite;
+    }
+
+    .cone-lines {
+      position: fixed; 
+      width: 200vw;
+      height: 200vh; /* covers slight scrolling */
+      top: -50vh; 
+      background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.03),
+        rgba(255, 255, 255, 0.03) 2px,
+        transparent 2px,
+        transparent 20px
+      );
+      z-index: -1;
+      pointer-events: none;
+      transform: rotate(10deg);
+    }
+
+    body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    bottom: 0;
+    background: linear-gradient(to bottom right, #1F1F1F, #202020);
+    z-index: -2;
+    }
+
+    #svg-bg {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const howToSteps = document.querySelectorAll('.howto-step');
+
+      howToSteps.forEach((el, i) => {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setTimeout(() => {
+                el.classList.remove('opacity-0', 'blur-sm', '-translate-x-10');
+              }, i * 100);
+            } else {
+              el.classList.add('opacity-0', 'blur-sm', '-translate-x-10');
+            }
+          });
+        }, {
+          threshold: 0.1,
+        });
+
+        observer.observe(el);
+      });
+    });
+  </script>
+</head>
+
+<body class="relative text-[#EAEAEA] min-h-screen overflow-x-hidden overflow-y-auto flex flex-col items-center">
+  <!-- Cone Line Background -->
+  <div class="cone-lines"></div>
+
+  <!-- Subtle Radial Glow -->
+  <svg id="svg-bg" width="100%" height="100%">
+    <defs>
+      <radialGradient id="bgGradient" cx="50%" cy="50%" r="70%">
+        <stop offset="0%" stop-color="#A8FF60" stop-opacity="0.03" />
+        <stop offset="100%" stop-color="transparent" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#bgGradient)" />
+  </svg>
+
+<section class="flex flex-col justify-center items-center w-full h-screen z-1 relative gap-1 px-4">
+  <!-- Title -->
+  <header class="text-center">
+    <h1 class="text-5xl font-extrabold text-[#A8FF60] tracking-wide">OFF TOPIC</h1>
+    <p class="text-gray-400 mt-2 text-lg">Blend in. Improvise. Find The Impostor.</p>
+  </header>
+
+  <!-- Avatars -->
+  <div class="w-full max-w-xl text-center">
+    <h2 class="text-xl font-semibold mb-4 text-gray-300">Choose Your Avatar</h2>
+    <div id="avatar-grid" class="grid grid-cols-4 gap-4 justify-center">
+      <!-- JS will populate avatars -->
+    </div>
+    <p id="selected-avatar" class="mt-4 text-sm text-gray-400 italic">No avatar selected</p>
+  </div>
+
+  <!-- Name + Buttons -->
+  <div class="w-full max-w-xl space-y-6">
+    <input id="name" placeholder="Enter your name"
+      class="w-full px-4 py-3 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-[#A8FF60]" />
+
+    <div class="flex flex-col sm:flex-row gap-4 justify-between items-center">
+      <button onclick="createRoom()"
+        class="w-full sm:w-1/2 px-6 py-3 bg-[#A8FF60] hover:bg-[#B2FF70] text-black font-semibold rounded-lg transition-all">
+        Create Room
+      </button>
+
+      <div class="w-full sm:w-1/2 flex flex-col gap-2">
+        <input id="joinCode" placeholder="Room Code" class="px-4 py-2 rounded bg-gray-800 text-white" />
+        <button onclick="joinRoom()"
+          class="px-6 py-2 bg-blue-500 hover:bg-blue-400 text-white font-medium rounded-lg transition-all">
+          Join Room
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ↓ Scroll arrow -->
+  <div 
+  class="absolute bottom-4 text-white text-2xl animate-bounce opacity-40 cursor-pointer"
+  onclick="document.querySelector('#how-to-play').scrollIntoView({ behavior: 'smooth' })">
+  ↓
+</div>
+</section>
+  <!-- How to Play-->
+  <section id="how-to-play" class="w-full px-4 py-20">
+    <h2 class="text-white text-4xl font-extrabold text-center mb-16">How to Play</h2>
+  
+    <div class="flex flex-col md:flex-row justify-center items-start gap-12 max-w-6xl mx-auto">
+      <!-- Step 1 -->
+      <div class="howto-step transition-all duration-700 ease-in-out opacity-0 blur-sm -translate-x-10">
+        <p class="text-white text-xl font-semibold text-center mb-4">Everybody gets a question</p>
+        <img src="/assets/HowToPlay1.png" alt="Step 1" class="w-72 sm:w-80 md:w-96 lg:w-[26rem] h-auto mx-auto" />
+      </div>
+  
+      <!-- Step 2 -->
+      <div class="howto-step transition-all duration-700 ease-in-out opacity-0 blur-sm -translate-x-10">
+        <p class="text-white text-xl font-semibold text-center mb-4">One player gets a different question</p>
+        <img src="/assets/HowToPlay2.png" alt="Step 2" class="w-72 sm:w-80 md:w-96 lg:w-[26rem] h-auto mx-auto scale-[1.27]" />
+      </div>
+  
+      <!-- Step 3 -->
+      <div class="howto-step transition-all duration-700 ease-in-out opacity-0 blur-sm -translate-x-10">
+        <p class="text-white text-xl font-semibold text-center mb-4">Discuss who’s OFF TOPIC</p>
+        <img src="/assets/HowToPlay3.png" alt="Step 3" class="w-72 sm:w-80 md:w-96 lg:w-[26rem] h-auto mx-auto" />
+      </div>
+  
+      <!-- Step 4 -->
+      <div class="howto-step transition-all duration-700 ease-in-out opacity-0 blur-sm -translate-x-10">
+        <p class="text-white text-xl font-semibold text-center mb-4">Vote them out</p>
+        <img src="/assets/HowToPlay4.png" alt="Step 4" class="w-72 sm:w-80 md:w-96 lg:w-[26rem] h-auto mx-auto" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Dev Log Output -->
+  <pre id="output"
+    class="bg-gray-800 rounded p-4 mt-10 text-sm w-full max-w-2xl max-h-48 overflow-y-auto text-left hidden z-10"></pre>
+
+  <script src="script.js"></script>
+</body>
+</html>

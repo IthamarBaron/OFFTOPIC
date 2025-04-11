@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Off Topic - Game</title>
+  <script src="game.js" defer></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-2px); }
+      50% { transform: translateX(2px); }
+      75% { transform: translateX(-1px); }
+    }
+
+    .shake {
+      animation: shake 0.3s ease;
+    }
+
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-2px); }
+    }
+
+    .floaty {
+      animation: floaty 2.5s ease-in-out infinite;
+    }
+
+    .cone-lines {
+      position: fixed; 
+      width: 200vw;
+      height: 200vh; /* covers slight scrolling */
+      top: -50vh; 
+      background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.03),
+        rgba(255, 255, 255, 0.03) 2px,
+        transparent 2px,
+        transparent 20px
+      );
+      z-index: -1;
+      pointer-events: none;
+      transform: rotate(10deg);
+    }
+
+    body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    min-height: 100%;
+    background: linear-gradient(to bottom right, #1F1F1F, #202020);
+    z-index: -2;
+    }
+
+    #svg-bg {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    #countdown-number {
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  }
+  .scale-75 {
+    transform: scale(0.75);
+  }
+  .scale-100 {
+    transform: scale(1);
+  }
+  .opacity-0 {
+    opacity: 0;
+  }
+  .opacity-100 {
+    opacity: 1;
+  }
+
+  #game-log::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  #game-log::-webkit-scrollbar-track {
+    background: #1a1a1a;
+    border-radius: 4px;
+  }
+
+  #game-log::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+  }
+
+  #game-log::-webkit-scrollbar-thumb:hover {
+    background: #444;
+  }
+  </style>
+</head>
+
+<body class="relative text-[#EAEAEA] min-h-[120vh] overflow-y-auto scroll-smooth flex flex-col items-center px-4 py-6 overflow-x-hidden">
+    <div id="countdown-overlay" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center hidden">
+        <div id="countdown-number" class="text-[10rem] font-extrabold text-[#A8FF60] drop-shadow-xl scale-100 opacity-100 transition-transform duration-500"></div>
+      </div>
+  <!-- Cone lines + background glow -->
+  <div class="cone-lines"></div>
+  <svg id="svg-bg" width="100%" height="100%">
+    <defs>
+      <radialGradient id="bgGradient" cx="50%" cy="50%" r="70%">
+        <stop offset="0%" stop-color="#A8FF60" stop-opacity="0.03" />
+        <stop offset="100%" stop-color="transparent" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#bgGradient)" />
+  </svg>
+
+  <!-- Game Title -->
+  <header class="text-center mt-4 z-10">
+    <h1 class="text-4xl font-extrabold text-[#A8FF60]">OFF TOPIC</h1>
+  </header>
+
+  <!-- Game Layout -->
+  <main class="flex flex-col lg:flex-row w-full max-w-6xl mt-8 gap-6 z-10">
+    <!-- Player List (desktop only) -->
+    <aside class="hidden lg:block w-1/4 bg-[#2a2a2a] rounded-xl p-4 self-start sticky top-4">
+      <h2 class="text-lg font-semibold text-lime-400 mb-3">Players</h2>
+      <div id="players" class="flex flex-col gap-4 items-center">
+        <!-- Filled by JS -->
+      </div>
+    </aside>
+
+    <!-- Game Panel -->
+    <section class="lg:w-3/4">
+      <div class="bg-[#2a2a2a] p-6 rounded-xl shadow-lg">
+        <div class="max-w-xl mx-auto">
+          <!-- Question -->
+          <h2 id="question" class="text-2xl font-bold text-lime-300 mb-6 text-center">Waiting for question...</h2>
+
+          <!-- Timer Bar -->
+          <div class="w-full h-4 bg-gray-700 rounded-full overflow-hidden mb-6">
+            <div id="timer-bar" class="h-full bg-green-400 transition-all duration-300 ease-linear" style="width: 100%;"></div>
+          </div>
+
+          <!-- Answer Box -->
+          <textarea id="answer-input" rows="4" maxlength="50" placeholder="Type your answer..." 
+            class="w-full bg-[#1a1a1a] border border-gray-600 rounded-lg p-4 text-white resize-none mb-1 focus:outline-none focus:ring-2 focus:ring-lime-400"></textarea>
+
+          <!-- Character Counter -->
+          <div class="text-right text-sm text-gray-400 pr-1 mb-3" id="char-counter">0 / 50</div>
+
+          <!-- Submit Button -->
+          <div class="flex justify-center">
+            <button id="send-answer" 
+              class="bg-[#A8FF60] text-black font-bold py-2 px-6 rounded-lg hover:bg-[#B2FF70] transition disabled:opacity-50 disabled:cursor-not-allowed">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

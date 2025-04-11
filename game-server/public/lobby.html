@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        @keyframes floaty {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-2px); }
+        }
+      
+        .floaty {
+          animation: floaty 2.5s ease-in-out infinite;
+        }
+      
+        .cone-lines {
+          position: fixed; 
+          width: 200vw;
+          height: 200vh; /* covers slight scrolling */
+          top: -50vh; 
+          background-image: repeating-linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.03),
+            rgba(255, 255, 255, 0.03) 2px,
+            transparent 2px,
+            transparent 20px
+          );
+          z-index: 0;
+          pointer-events: none;
+          transform: rotate(10deg);
+        }
+      
+        body::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 150vh; /* <- KEY FIX */
+          background: linear-gradient(to bottom right, #1F1F1F, #202020);
+          z-index: -2;
+        }
+
+      
+        #svg-bg {
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+          pointer-events: none;
+        }
+        
+        /* Crown animation */
+        @keyframes glow {
+          0%, 100% { filter: drop-shadow(0 0 3px gold); }
+          50% { filter: drop-shadow(0 0 6px gold); }
+        }
+        
+        .crown-icon {
+          animation: glow 2s ease-in-out infinite;
+        }
+
+        /* Golden outline for leader */
+        .leader-outline {
+          box-shadow: 0 0 0 3px gold, 0 0 10px gold;
+        }
+      </style>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Off Topic - Lobby</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="croll-smooth bg-[#1F1F1F] text-[#EAEAEA] min-h-[125vh] overflow-y-auto flex flex-col items-center px-4 py-8">
+
+        <div class="cone-lines"></div>
+    <svg id="svg-bg" width="100%" height="100%">
+    <defs>
+        <radialGradient id="bgGradient" cx="50%" cy="50%" r="70%">
+        <stop offset="0%" stop-color="#A8FF60" stop-opacity="0.03" />
+        <stop offset="100%" stop-color="transparent" stop-opacity="0" />
+        </radialGradient>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#bgGradient)" />
+    </svg>
+
+  <!-- Game Title -->
+  <header class="text-center mb-6">
+    <h1 class="text-4xl font-extrabold text-[#A8FF60]">OFF TOPIC</h1>
+    <p class="text-gray-400 text-sm">Room Code: <span id="room-code" class="font-mono text-lg">XXXX</span></p>
+  </header>
+
+  <!-- Leader Info Banner -->
+  <div class="w-full max-w-2xl mb-4 bg-gray-800 bg-opacity-50 p-2 rounded-lg text-center text-sm">
+    <p>👑 The lobby leader can manage settings and start the game</p>
+  </div>
+
+  <!-- Player List -->
+  <section class="w-full max-w-2xl mb-10">
+    <div class="mb-4 text-center text-sm text-gray-400" id="player-count">
+        Players in lobby: 0
+      </div>
+      
+      <div id="player-list" class="grid grid-cols-2 sm:grid-cols-3 gap-6 justify-center">
+        <!-- Populated by JS -->
+      </div>
+  </section>
+
+  <!-- Settings Panel -->
+  <section id="settings-panel" class="w-full max-w-md bg-[#2a2a2a] p-6 rounded-xl shadow-lg mb-10">
+    <h2 class="text-lg font-semibold text-[#A8FF60] mb-4 flex items-center">
+      <span>Game Settings</span>
+      <span class="ml-2 text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">Leader Only</span>
+    </h2>
+
+    <div class="space-y-4">
+      <div class="flex justify-between items-center">
+        <label for="rounds" class="text-sm">Rounds</label>
+        <select id="rounds" class="w-20 px-2 py-1 rounded bg-gray-800 text-white text-center">
+          <option value="3">3</option>
+          <option value="4" selected>4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+        </select>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <label for="answer-time" class="text-sm">Answer Time (sec)</label>
+        <select id="answer-time" class="w-20 px-2 py-1 rounded bg-gray-800 text-white text-center">
+          <option value="20">20</option>
+          <option value="30" selected>30</option>
+          <option value="40">40</option>
+          <option value="50">50</option>
+          <option value="60">60</option>
+        </select>
+      </div>
+      
+      <div class="flex justify-between items-center">
+        <label for="discussion-time" class="text-sm">Discussion Time (sec)</label>
+        <select id="discussion-time" class="w-20 px-2 py-1 rounded bg-gray-800 text-white text-center">
+          <option value="60">60</option>
+          <option value="70">70</option>
+          <option value="80" selected>80</option>
+          <option value="90">90</option>
+          <option value="100">100</option>
+          <option value="110">110</option>
+          <option value="120">120</option>
+        </select>
+      </div>
+      
+      <div class="pt-2">
+        <button id="save-settings" class="w-full px-4 py-2 bg-[#A8FF60] hover:bg-[#B2FF70] text-black font-medium rounded transition-all">
+          Save Settings
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Start Button -->
+  <button id="start-button" disabled
+    class="px-6 py-3 bg-gray-700 text-white rounded-lg opacity-50 cursor-not-allowed hover:bg-gray-600 transition-all">
+    Start Game
+  </button>
+
+  <script src="lobby.js"></script>
+</body>
+</html>
