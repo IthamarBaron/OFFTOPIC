@@ -1,6 +1,9 @@
 
-const ws = new WebSocket('ws://localhost:3000');
-
+const ws = new WebSocket(
+  location.protocol === 'https:' 
+    ? 'wss://' + location.host 
+    : 'ws://' + location.host
+)
 const avatarFilenames = [
     "Avatar1.png", "Avatar2.png", "Avatar3.png", "Avatar4.png",
     "Avatar5.png", "Avatar6.png", "Avatar7.png", "Avatar8.png"

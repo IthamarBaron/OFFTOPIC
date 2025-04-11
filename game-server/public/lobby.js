@@ -1,5 +1,9 @@
 // public/lobby.js
-const ws = new WebSocket('ws://localhost:3000');
+const ws = new WebSocket(
+    location.protocol === 'https:' 
+      ? 'wss://' + location.host 
+      : 'ws://' + location.host
+  )
 
 // Grab saved room info
 const roomCode = sessionStorage.getItem("roomCode") || "XXXX";

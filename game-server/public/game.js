@@ -3,7 +3,11 @@ let currentTimer = null;  // Add at the top of the file to store timer reference
 let currentPlayers = [];  // Add at the top of the file with other globals
 let votedPlayers = new Set(); // Add at the top with other global variables
 
-const ws = new WebSocket("ws://localhost:3000");
+const ws = new WebSocket(
+  location.protocol === 'https:' 
+    ? 'wss://' + location.host 
+    : 'ws://' + location.host
+)
 
 // Load data from sessionStorage (required for reconnection)
 const roomCode = sessionStorage.getItem("roomCode") || "XXXX";
