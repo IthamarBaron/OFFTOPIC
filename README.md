@@ -64,13 +64,13 @@ No two games are alike, and the deceptive similarity of questions means even a g
 
 ## Screenshots
 
+### Home Page
+
+![homepage](https://github.com/IthamarBaron/OFFTOPIC/raw/main/screenshots/homepage.png)
+
 ### Lobby Creation
 
-![Lobby Setup](https://github.com/IthamarBaron/OFFTOPIC/raw/main/screenshots/lobby.png)
-
-### Role Assignment
-
-![Role Assignment](https://github.com/IthamarBaron/OFFTOPIC/raw/main/screenshots/role.png)
+![Lobby Creation](https://github.com/IthamarBaron/OFFTOPIC/raw/main/screenshots/lobby.png)
 
 ### Question Reveal
 
