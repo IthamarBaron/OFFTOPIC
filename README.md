@@ -66,23 +66,23 @@ No two games are alike, and the deceptive similarity of questions means even a g
 
 ### Home Page
 
-![homepage](https://github.com/IthamarBaron/OFFTOPIC/raw/main/screenshots/homepage.png)
+![homepage](https://github.com/IthamarBaron/OFFTOPIC/blob/master/screenshots/homepage.png)
 
 ### Lobby Creation
 
-![Lobby Creation](https://github.com/IthamarBaron/OFFTOPIC/raw/main/screenshots/lobby.png)
+![Lobby Creation](https://github.com/IthamarBaron/OFFTOPIC/blob/master/screenshots/lobby.png)
 
 ### Question Reveal
 
-![Question Reveal](https://github.com/IthamarBaron/OFFTOPIC/raw/main/screenshots/question.png)
+![Question Reveal](https://github.com/IthamarBaron/OFFTOPIC/blob/master/screenshots/question.png)
 
 ### Answer Discussion
 
-![Answer Discussion](https://github.com/IthamarBaron/OFFTOPIC/raw/main/screenshots/discussion.png)
+![Answer Discussion](https://github.com/IthamarBaron/OFFTOPIC/blob/master/screenshots/discussion.png)
 
 ### Voting Phase
 
-![Voting Phase](https://github.com/IthamarBaron/OFFTOPIC/raw/main/screenshots/voting.png)
+![Voting Phase](https://github.com/IthamarBaron/OFFTOPIC/blob/master/screenshots/voting.png)
 
 ---
 
